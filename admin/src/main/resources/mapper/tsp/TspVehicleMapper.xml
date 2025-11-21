@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.modern.tsp.mapper.TspVehicleMapper">
+    <select id="selectVin" resultType="java.lang.String">
+        select a.vin from tsp_vehicle a
+        LEFT JOIN tsp_equipment c ON a.tsp_equipment_id = c.id
+        LEFT JOIN tsp_vehicle_license b ON b.tsp_vehicle_id = a.id
+        LEFT JOIN tsp_vehicle_market d ON d.tsp_vehicle_id = a.id
+        where
+        a.is_delete = 0
+        AND a.state != 5
+        <if test="vo.dealerId!=null and vo.dealerId!=''">
+            and a.dealer_id = #{vo.dealerId}
+        </if>
+        <if test="vo.search!=null and vo.search!=''">
+            and a.vin = #{vo.search}
+        </if>
+
+        <if test="vo.provinceValue!=null and vo.provinceValue != ''">
+            and b.award_province = #{vo.provinceValue}
+        </if>
+
+        <if test="vo.cityValue!=null and vo.cityValue != ''">
+            and b.award_city = #{vo.cityValue}
+        </if>
+
+        <if test="vo.areaValue!=null and vo.areaValue != ''">
+            and b.award_area = #{vo.areaValue}
+        </if>
+
+        <if test="vo.dealerName!=null and vo.dealerName != ''">
+            and d.sales_unit_name = #{vo.dealerName}
+        </if>
+    </select>
+
+    <select id="selectVinByDealerId" resultType="java.lang.String">
+        select vin
+        from tsp_vehicle
+        where is_delete = 0
+        AND state != 5
+        <if test="dealerId!=null and dealerId!=''">
+            and dealer_id = #{dealerId}
+        </if>
+    </select>
+
+    <select id="selectVinByDealerIds" resultType="java.lang.String">
+        select vin
+        from tsp_vehicle
+        where is_delete = 0
+        AND state != 5
+        <if test="dealerIds!=null and dealerIds.size > 0">
+            and dealer_id in
+            <foreach collection="dealerIds" item="dealerId" open="(" close=")" separator=",">
+                #{dealerId}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="selectVinByAddress" resultType="java.lang.String">
+        select a.vin from tsp_vehicle_license a left join tsp_vehicle b on a.vin = b.vin
+        where
+        a.is_delete = 0
+        and b.is_delete =0
+        and b.state != 5
+        <if test="vo.provinceValue!=null and vo.provinceValue!=''">
+            and a.award_province = #{vo.provinceValue}
+        </if>
+        <if test="vo.cityValue != null and vo.cityValue != ''">
+            and a.award_city = #{vo.cityValue}
+        </if>
+        <if test="vo.areaValue != null and vo.areaValue != ''">
+            and a.award_area = #{vo.areaValue}
+        </if>
+    </select>
+
+    <select id="countAllCar" resultType="java.lang.Long">
+        select count(1)
+        from tsp_vehicle
+        where is_delete = 0
+        and state != 5
+        <if test="vo.endTime != null and vo.endTime != ''">
+            and create_time &lt; #{vo.endTime}
+        </if>
+        ;
+    </select>
+
+    <select id="volumeChartData" resultType="com.modern.tsp.model.dto.VolumeDTO">
+        SELECT DATE_FORMAT(t.create_time, '%Y-%m-%d') as 'date',
+        count(1) as 'count',
+        a.std_mode_name as 'carType'
+        FROM tsp_vehicle t
+        left join tsp_vehicle_std_model a on t.tsp_vehicle_std_model_id = a.id
+        WHERE t.is_delete = 0
+        AND t.state != 5
+        <if test="vo.vinList != null and vo.vinList.size > 0">
+            and t.vin in
+            <foreach collection="vo.vinList" separator="," close=")" open="(" item="vin">
+                #{vin}
+            </foreach>
+        </if>
+        <if test="vo.startTime != null and vo.endTime != null">
+            and t.create_time BETWEEN #{vo.startTime} and #{vo.endTime}
+        </if>
+        GROUP BY DATE_FORMAT(
+        t.create_time,
+        '%y%m%d'),
+        a.id,
+        a.std_mode_name
+    </select>
+
+    <select id="selectCarInfoList" resultType="java.lang.String">
+        select concat(tv.vin, '，车辆类型：', tvsm.std_mode_name)
+        from tsp_vehicle tv
+                 left join tsp_vehicle_std_model tvsm on tv.tsp_vehicle_std_model_id = tvsm.id
+
+    </select>
+</mapper>

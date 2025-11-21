@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.modern.tsp.waring.mapper.WarningInfoMapper">
+
+    <resultMap type="com.modern.tsp.waring.domain.WarningInfo" id="WarningInfoResult">
+        <result property="id"    column="id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="isDelete"    column="is_delete"    />
+        <result property="ruleName"    column="rule_name"    />
+        <result property="ruleDetail"    column="rule_detail"    />
+        <result property="ruleSource"    column="rule_source"    />
+        <result property="steelPhone"    column="steel_phone"    />
+        <result property="sendCount"    column="send_count"    />
+        <result property="remark"    column="remark"    />
+        <result property="type"    column="type"    />
+        <result property="waringDistance"    column="waring_distance"    />
+    </resultMap>
+
+    <sql id="selectWarningInfoVo">
+        select id, create_by, create_time, update_by, update_time, is_delete, rule_name, rule_detail, rule_source, steel_phone, send_count, remark, type, waring_distance from warning_info
+    </sql>
+
+    <select id="selectWarningInfoList" parameterType="com.modern.tsp.waring.mapper.WarningInfoMapper" resultMap="WarningInfoResult">
+        <include refid="selectWarningInfoVo"/>
+        <where>
+            <if test="isDelete != null "> and is_delete = #{isDelete}</if>
+            <if test="ruleName != null  and ruleName != ''"> and rule_name like concat('%', #{ruleName}, '%')</if>
+            <if test="ruleDetail != null  and ruleDetail != ''"> and rule_detail = #{ruleDetail}</if>
+            <if test="ruleSource != null "> and rule_source = #{ruleSource}</if>
+            <if test="steelPhone != null  and steelPhone != ''"> and steel_phone = #{steelPhone}</if>
+            <if test="sendCount != null "> and send_count = #{sendCount}</if>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="waringDistance != null "> and waring_distance = #{waringDistance}</if>
+        </where>
+    </select>
+
+    <select id="selectWarningInfoById" parameterType="Long" resultMap="WarningInfoResult">
+        <include refid="selectWarningInfoVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertWarningInfo" parameterType="com.modern.tsp.waring.mapper.WarningInfoMapper" useGeneratedKeys="true" keyProperty="id">
+        insert into warning_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="isDelete != null">is_delete,</if>
+            <if test="ruleName != null">rule_name,</if>
+            <if test="ruleDetail != null">rule_detail,</if>
+            <if test="ruleSource != null">rule_source,</if>
+            <if test="steelPhone != null">steel_phone,</if>
+            <if test="sendCount != null">send_count,</if>
+            <if test="remark != null">remark,</if>
+            <if test="type != null">type,</if>
+            <if test="waringDistance != null">waring_distance,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="isDelete != null">#{isDelete},</if>
+            <if test="ruleName != null">#{ruleName},</if>
+            <if test="ruleDetail != null">#{ruleDetail},</if>
+            <if test="ruleSource != null">#{ruleSource},</if>
+            <if test="steelPhone != null">#{steelPhone},</if>
+            <if test="sendCount != null">#{sendCount},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="type != null">#{type},</if>
+            <if test="waringDistance != null">#{waringDistance},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWarningInfo" parameterType="com.modern.tsp.waring.mapper.WarningInfoMapper">
+        update warning_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="isDelete != null">is_delete = #{isDelete},</if>
+            <if test="ruleName != null">rule_name = #{ruleName},</if>
+            <if test="ruleDetail != null">rule_detail = #{ruleDetail},</if>
+            <if test="ruleSource != null">rule_source = #{ruleSource},</if>
+            <if test="steelPhone != null">steel_phone = #{steelPhone},</if>
+            <if test="sendCount != null">send_count = #{sendCount},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="waringDistance != null">waring_distance = #{waringDistance},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWarningInfoById" parameterType="Long">
+        delete from warning_info where id = #{id}
+    </delete>
+
+    <delete id="deleteWarningInfoByIds" parameterType="String">
+        delete from warning_info where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.modern.exInterface.mapper.VehicleIntegrateMapper">
+    <select id="findByDateAndVinList" resultType="com.modern.exInterface.entity.VehicleIntegrate">
+        select *
+        from (select DISTINCT vin, mileage, create_time
+              from vehicle_integrate
+              where 1 = 1
+                <if test="date != null and date!=''">
+                    and date_format(create_time,'%y%m%d') = #{date}
+                </if>
+                <if test="vinList != null and vinList.size > 0">
+                    and vin in
+                    <foreach collection="vinList" separator="," close=")" open="(" item="vin">
+                        #{vin}
+                    </foreach>
+                </if>
+              order by create_time DESC) t
+        GROUP BY t.vin;
+    </select>
+    <select id="findByBeforeDateAndEqVin" resultType="com.modern.exInterface.entity.VehicleIntegrate">
+        select *
+        from (select DISTINCT vin, mileage, create_time
+        from vehicle_integrate
+        where 1 = 1
+        <if test="date != null and date!=''">
+            and create_time &lt; #{date}
+        </if>
+        <if test="vin != null and vin != ''">
+            and vin = #{vin}
+        </if>
+        order by create_time DESC) t
+        GROUP BY t.vin limit 1;
+    </select>
+</mapper>

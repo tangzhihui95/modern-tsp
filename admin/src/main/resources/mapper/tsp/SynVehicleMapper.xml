@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.modern.tsp.mapper.SynVehicleMapper">
+    <select id="query" resultType="com.modern.tsp.synchronize.SynVehicle">
+        SELECT v.id,v.create_time,v.update_time,v.is_delete isDeleted,v.vin,
+               v.ex_factory_date leaveFactory,v.tsp_vehicle_std_model_id,e.sn,e.imei,e.sim,l.plate_code
+        FROM tsp_vehicle v
+        LEFT JOIN tsp_equipment e ON v.tsp_equipment_id = e.id
+        LEFT JOIN tsp_vehicle_license l ON v.id = l.tsp_vehicle_id
+    </select>
+</mapper>

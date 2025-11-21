@@ -1,0 +1,732 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>2.5.5</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>jar</packaging>
+    <artifactId>TSP</artifactId>
+
+    <properties>
+        <modern.version>3.7.0</modern.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+        <maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
+        <druid.version>1.2.8</druid.version>
+        <bitwalker.version>1.21</bitwalker.version>
+        <docker.image.prefix>modern</docker.image.prefix>
+        <docker.location>8081</docker.location>
+        <swagger.version>3.0.0</swagger.version>
+        <kaptcha.version>2.3.2</kaptcha.version>
+        <mybatis-enhance-actable.version>1.5.0.RELEASE</mybatis-enhance-actable.version>
+        <mybatis-plus.version>3.4.3</mybatis-plus.version>
+        <mybatis-generator-core.version>1.4.0</mybatis-generator-core.version>
+        <mybatis-generator.version>3.4.1</mybatis-generator.version>
+        <mybatis.spring.boot.starter.version>2.2.0</mybatis.spring.boot.starter.version>
+        <pagehelper.boot.version>1.4.0</pagehelper.boot.version>
+        <pagehelper.version>5.1.10</pagehelper.version>
+        <fastjson.version>1.2.78</fastjson.version>
+        <oshi.version>5.8.2</oshi.version>
+        <jna.version>5.9.0</jna.version>
+        <commons.io.version>2.11.0</commons.io.version>
+        <commons.fileupload.version>1.4</commons.fileupload.version>
+        <commons.collections.version>3.2.2</commons.collections.version>
+        <poi.version>4.1.2</poi.version>
+        <velocity.version>1.7</velocity.version>
+        <jwt.version>0.9.1</jwt.version>
+        <minio.version>8.4.2</minio.version>
+        <jpush-client.version>3.6.1</jpush-client.version>
+        <jiguang-common.version>1.2.0</jiguang-common.version>
+        <netty-all.version>4.1.77.Final</netty-all.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+        </dependency>
+
+        <!-- 极光推送 -->
+        <dependency>
+            <groupId>cn.jpush.api</groupId>
+            <artifactId>jpush-client</artifactId>
+            <version>${jpush-client.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.jpush.api</groupId>
+            <artifactId>jiguang-common</artifactId>
+            <version>${jiguang-common.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>${netty-all.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+
+        <!-- 引入MybatisPlus -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus</artifactId>
+            <version>${mybatis-plus.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>${mybatis-plus.version}</version>
+        </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>org.bouncycastle</groupId>-->
+<!--            <artifactId>bcprov-jdk15on</artifactId>-->
+<!--            <version>1.70</version>-->
+<!--        </dependency>-->
+
+        <!--创建表的插件-->
+        <dependency>
+            <groupId>com.gitee.sunchenbin.mybatis.actable</groupId>
+            <artifactId>mybatis-enhance-actable</artifactId>
+            <version>${mybatis-enhance-actable.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.baomidou</groupId>
+                    <artifactId>mybatis-plus-annotation</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- 分布式存储服务 -->
+        <dependency>
+            <groupId>io.minio</groupId>
+            <artifactId>minio</artifactId>
+            <version>${minio.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mybatis.generator</groupId>
+            <artifactId>mybatis-generator-core</artifactId>
+            <version>${mybatis-generator-core.version}</version>
+        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>org.mybatis.spring.boot</groupId>-->
+        <!--            <artifactId>mybatis-spring-boot-starter</artifactId>-->
+        <!--            <version>2.1.3</version>-->
+        <!--        </dependency>-->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-generator</artifactId>
+            <version>${mybatis-generator.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>mybatis-plus-extension</artifactId>
+                    <groupId>com.baomidou</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- rabbit mq -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+
+        <!-- SpringBoot Web容器 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>jackson-datatype-jsr310</artifactId>
+                    <groupId>com.fasterxml.jackson.datatype</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- SpringBoot 拦截器 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+
+        <!-- 阿里数据库连接池 -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+            <version>${druid.version}</version>
+        </dependency>
+
+
+        <!-- 验证码 -->
+        <dependency>
+            <groupId>com.github.penggle</groupId>
+            <artifactId>kaptcha</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>javax.servlet-api</artifactId>
+                    <groupId>javax.servlet</groupId>
+                </exclusion>
+            </exclusions>
+            <version>${kaptcha.version}</version>
+        </dependency>
+
+        <!-- 获取系统信息 -->
+        <dependency>
+            <groupId>com.github.oshi</groupId>
+            <artifactId>oshi-core</artifactId>
+            <version>${oshi.version}</version>
+        </dependency>
+
+        <!-- Spring框架基本的核心工具 -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+        </dependency>
+
+        <!-- SpringWeb模块 -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+        </dependency>
+
+        <!-- spring security 安全认证 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <!--mybatis分页插件-->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper-spring-boot-starter</artifactId>
+            <version>${pagehelper.boot.version}</version>
+            <!--            <artifactId>pagehelper</artifactId>-->
+            <!--            <version>${pagehelper.version}</version>-->
+        </dependency>
+
+        <!-- 自定义验证注解 -->
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>6.1.0.Final</version>
+        </dependency>
+
+        <!--常用工具类 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+
+        <!-- JSON工具类 -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+
+        <!-- 阿里JSON解析器 -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
+        </dependency>
+
+        <!-- io常用工具类 -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons.io.version}</version>
+        </dependency>
+
+        <!-- 文件上传工具类 -->
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>${commons.fileupload.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>commons-io</artifactId>
+                    <groupId>commons-io</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- excel工具 -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>${poi.version}</version>
+        </dependency>
+
+        <!-- yml解析器 -->
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+        </dependency>
+
+        <!-- Token生成与解析-->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>${jwt.version}</version>
+        </dependency>
+
+        <!-- redis 缓存操作 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
+        <!-- pool 对象池 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+        </dependency>
+
+        <!-- 解析客户端操作系统、浏览器等 -->
+        <dependency>
+            <groupId>eu.bitwalker</groupId>
+            <artifactId>UserAgentUtils</artifactId>
+            <version>${bitwalker.version}</version>
+        </dependency>
+
+        <!-- servlet包 -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+
+        <!-- velocity代码生成使用模板 -->
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity</artifactId>
+            <version>${velocity.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-collections</groupId>
+                    <artifactId>commons-collections</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- collections工具类 -->
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>${commons.collections.version}</version>
+        </dependency>
+
+        <!-- 定时任务 -->
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.mchange</groupId>
+                    <artifactId>c3p0</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- spring-boot-devtools -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional> <!-- 表示依赖不会传递 -->
+        </dependency>
+
+        <!-- Swagger3依赖 -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-boot-starter</artifactId>
+            <version>${swagger.version}</version>
+            <!--            <exclusions>-->
+            <!--                <exclusion>-->
+            <!--                    <groupId>io.swagger</groupId>-->
+            <!--                    <artifactId>swagger-models</artifactId>-->
+            <!--                </exclusion>-->
+            <!--                <exclusion>-->
+            <!--                    <artifactId>swagger-annotations</artifactId>-->
+            <!--                    <groupId>io.swagger</groupId>-->
+            <!--                </exclusion>-->
+            <!--            </exclusions>-->
+        </dependency>
+        <dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-spring-boot-starter</artifactId>
+            <version>3.0.3</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>swagger-annotations</artifactId>
+                    <groupId>io.swagger</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>guava</artifactId>
+                    <groupId>com.google.guava</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>swagger-models</artifactId>
+                    <groupId>io.swagger</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- 防止进入swagger页面报类型转换错误，排除3.0.0中的引用，手动增加1.6.2版本 -->
+        <!--        <dependency>-->
+        <!--            <groupId>io.swagger</groupId>-->
+        <!--            <artifactId>swagger-models</artifactId>-->
+        <!--            <version>1.6.2</version>-->
+        <!--        </dependency>-->
+
+        <!-- Mysql驱动包 -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+
+        <!-- SpringBoot集成mybatis框架 -->
+        <!--        <dependency>-->
+        <!--            <groupId>org.mybatis.spring.boot</groupId>-->
+        <!--            <artifactId>mybatis-spring-boot-starter</artifactId>-->
+        <!--            <version>${mybatis.spring.boot.starter.version}</version>-->
+        <!--        </dependency>-->
+
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.8.5</version>
+        </dependency>
+
+        <!-- SFTP -->
+        <dependency>
+            <groupId>commons-net</groupId>
+            <artifactId>commons-net</artifactId>
+            <version>3.8.0</version>
+        </dependency>
+
+        <!-- docker-java 依赖 -->
+        <!-- https://mvnrepository.com/artifact/com.github.docker-java/docker-java -->
+        <dependency>
+            <groupId>com.github.docker-java</groupId>
+            <artifactId>docker-java</artifactId>
+            <version>3.2.13</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jcraft</groupId>
+            <artifactId>jsch</artifactId>
+            <version>0.1.55</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.persistence</groupId>
+            <artifactId>jakarta.persistence-api</artifactId>
+            <version>2.2.3</version>
+        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.cloud</groupId>-->
+        <!--            <artifactId>spring-cloud-openfeign-core</artifactId>-->
+        <!--            <version>2.2.5.RELEASE</version>-->
+        <!--        </dependency>-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <version>3.0.6</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>bcpkix-jdk15on</artifactId>
+                    <groupId>org.bouncycastle</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!--    微信    -->
+        <!-- https://mvnrepository.com/artifact/com.github.liyiorg/weixin-popular -->
+        <dependency>
+            <groupId>com.github.liyiorg</groupId>
+            <artifactId>weixin-popular</artifactId>
+            <version>2.8.30</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.retry</groupId>
+            <artifactId>spring-retry</artifactId>
+            <version>1.2.5.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.openfeign</groupId>
+            <artifactId>feign-okhttp</artifactId>
+            <version>10.10.1</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>feign-core</artifactId>
+                    <groupId>io.github.openfeign</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>commons-httpclient</groupId>
+            <artifactId>commons-httpclient</artifactId>
+            <version>3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.openfeign</groupId>
+            <artifactId>feign-httpclient</artifactId>
+            <version>10.10.1</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>feign-core</artifactId>
+                    <groupId>io.github.openfeign</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger2 -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>20.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- 分布式锁框架-->
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
+            <version>3.16.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.aliyun.oss</groupId>
+            <artifactId>aliyun-sdk-oss</artifactId>
+            <version>3.7.0</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>aliyun-java-sdk-core</artifactId>
+                    <groupId>com.aliyun</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.aliyun/aliyun-java-sdk-core -->
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>aliyun-java-sdk-core</artifactId>
+            <version>4.4.6</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>2.13.0</version>
+        </dependency>
+        <!--        人脸对比-->
+<!--        <dependency>-->
+<!--            <groupId>com.aliyun</groupId>-->
+<!--            <artifactId>cloudauth20190307</artifactId>-->
+<!--            <version>1.0.5</version>-->
+<!--            <exclusions>-->
+<!--                <exclusion>-->
+<!--                    <artifactId>credentials-java</artifactId>-->
+<!--                    <groupId>com.aliyun</groupId>-->
+<!--                </exclusion>-->
+<!--                <exclusion>-->
+<!--                    <artifactId>tea</artifactId>-->
+<!--                    <groupId>com.aliyun</groupId>-->
+<!--                </exclusion>-->
+<!--                <exclusion>-->
+<!--                    <artifactId>openapiutil</artifactId>-->
+<!--                    <groupId>com.aliyun</groupId>-->
+<!--                </exclusion>-->
+<!--                <exclusion>-->
+<!--                    <artifactId>tea-openapi</artifactId>-->
+<!--                    <groupId>com.aliyun</groupId>-->
+<!--                </exclusion>-->
+<!--                <exclusion>-->
+<!--                    <artifactId>tea-util</artifactId>-->
+<!--                    <groupId>com.aliyun</groupId>-->
+<!--                </exclusion>-->
+<!--                <exclusion>-->
+<!--                    <artifactId>tea-rpc-util</artifactId>-->
+<!--                    <groupId>com.aliyun</groupId>-->
+<!--                </exclusion>-->
+<!--            </exclusions>-->
+<!--        </dependency>-->
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>aliyun-java-sdk-dysmsapi</artifactId>
+            <version>1.1.0</version>
+        </dependency>
+        <!--Alibaba-Excel-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>easyexcel</artifactId>
+            <version>3.0.0-beta1</version>
+        </dependency>
+        <!--测试类-->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!--测试类-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!--测试类-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <!--        <resources>-->
+        <!--            <resource>-->
+        <!--                <directory>src/main/java</directory>-->
+        <!--                <includes>-->
+        <!--                    <include>**/*.xml</include>-->
+        <!--                </includes>-->
+        <!--                <filtering>false</filtering>-->
+        <!--            </resource>-->
+        <!--        </resources>-->
+        <plugins>
+            <!--            <plugin>-->
+            <!--                <groupId>org.apache.maven.plugins</groupId>-->
+            <!--                <artifactId>maven-site-plugin</artifactId>-->
+            <!--                <version>3.8.2</version>-->
+            <!--            </plugin>-->
+            <!--            <plugin>-->
+            <!--                <groupId>org.apache.maven.plugins</groupId>-->
+            <!--                <artifactId>maven-deploy-plugin</artifactId>-->
+            <!--                <version>3.0.0-M1</version>-->
+            <!--            </plugin>-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.1.1</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.2.6.RELEASE</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <jvmArguments>-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8082</jvmArguments>
+                </configuration>
+            </plugin>
+            <!--docker远程访问-->
+<!--            <plugin>-->
+<!--                <groupId>com.spotify</groupId>-->
+<!--                <artifactId>docker-maven-plugin</artifactId>-->
+<!--                <version>1.2.2</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>build-image</id>-->
+<!--                        <phase>package</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>build</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--                <configuration>-->
+<!--                    <imageTags>-->
+<!--                        <imageTag>latest</imageTag>-->
+<!--                    </imageTags>-->
+<!--                    <imageName>${project.artifactId}</imageName>-->
+<!--                    <dockerHost>${docker.location}</dockerHost>-->
+<!--                    <dockerDirectory>${project.basedir}</dockerDirectory>-->
+<!--                    &lt;!&ndash; 这里是复制 jar 包到 docker 容器指定目录配置，也可以写到 Docokerfile 中 &ndash;&gt;-->
+<!--                    <resources>-->
+<!--                        <resource>-->
+<!--                            <targetPath>/</targetPath>-->
+<!--                            <directory>${project.build.directory}</directory>-->
+<!--                            <include>${project.build.finalName}.jar</include>-->
+<!--                        </resource>-->
+<!--                    </resources>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+        </plugins>
+    </build>
+
+    <repositories>
+
+        <repository>
+            <id>public</id>
+            <name>aliyun nexus</name>
+            <url>https://maven.aliyun.com/repository/public</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>public</id>
+            <name>aliyun nexus</name>
+            <url>https://maven.aliyun.com/repository/public</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+
+</project>

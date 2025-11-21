@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.modern.xtsp.mapper.XTspVehicleMapper">
+
+    <select id="selectAllVehicles" resultType="com.modern.tsp.domain.TspVehicle">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM tsp_vehicle tv
+        WHERE
+            tv.is_delete = 0 AND tv.tsp_equipment_id IS NOT NULL AND tv.state != 4 AND tv.state != 5
+    </select>
+
+    <select id="selectAllVehiclesBySysUserId" parameterType="Long" resultType="com.modern.tsp.domain.TspVehicle">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM tsp_vehicle tv
+            INNER JOIN tsp_vehicle_sys_role tvsr ON tvsr.vehicle_id = tv.id AND tvsr.is_delete = 0
+            INNER JOIN sys_user_role sur ON sur.role_id = tvsr.role_id
+        WHERE
+            sur.user_id = #{sysUserId} AND tv.is_delete = 0 AND tv.tsp_equipment_id IS NOT NULL AND tv.state != 4 AND tv.state != 5
+    </select>
+
+    <select id="selectAllVehiclesBySysRoleId" parameterType="Long" resultType="com.modern.tsp.domain.TspVehicle">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM tsp_vehicle tv
+            INNER JOIN tsp_vehicle_sys_role tvsr ON tvsr.vehicle_id = tv.id AND tvsr.is_delete = 0
+        WHERE
+            tvsr.role_id = #{sysRoleId} AND tv.is_delete = 0 AND tv.tsp_equipment_id IS NOT NULL AND tv.state != 4 AND tv.state != 5
+    </select>
+
+    <sql id="Base_Column_List">
+        tv.id,tv.create_by,tv.update_by,
+        tv.create_time,tv.update_time,tv.is_delete,
+        tv.tsp_equipment_id,tv.provider_name,tv.configure_name,
+        tv.color,tv.batch_no,tv.purpose,
+        tv.ex_factory_date,tv.operate_date,tv.label,
+        tv.state,tv.current_bind_time,tv.progress,
+        tv.is_complete,tv.remark,tv.scrap_time,
+        tv.operator,tv.tsp_user_id,tv.vin,
+        tv.tsp_vehicle_std_model_id,tv.certification_state,tv.motor_num,
+        tv.engine_num,tv.send_status,tv.send_time,
+        tv.ess_num,tv.ess_model,tv.motor_brand,
+        tv.cdu_num,tv.user_id,tv.dept_id,
+        tv.dealer_id
+    </sql>
+</mapper>

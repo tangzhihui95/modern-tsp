@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.modern.xtsp.mapper.XTspVehicleSysRoleMapper">
+    <select id="queryTspVehicleSysRoleVOByRoleId" parameterType="Long" resultType="com.modern.xtsp.domain.vo.TspVehicleSysRoleVO">
+        SELECT t.vehicle_id, tv.vin,
+               group_concat(sr.role_name) role_names,
+               concat(tvm.vehicle_model_name, '/', tvsm.std_mode_name) vehicle_type,
+               tv.dealer_id, td.dealer_name, td.dealer_address
+        FROM tsp_vehicle_sys_role t
+            LEFT JOIN tsp_vehicle tv ON tv.id = t.vehicle_id AND tv.is_delete = 0 AND tv.tsp_equipment_id IS NOT NULL AND tv.state != 4 AND tv.state != 5
+            LEFT JOIN sys_role sr ON sr.role_id = t.role_id AND sr.del_flag = 0
+            LEFT JOIN tsp_vehicle_std_model tvsm ON tvsm.id = tv.tsp_vehicle_std_model_id AND tvsm.is_delete = 0
+            LEFT JOIN tsp_vehicle_model tvm ON tvm.id = tvsm.tsp_vehicle_model_id AND tvm.is_delete = 0
+            LEFT JOIN tsp_dealer td ON td.id = tv.dealer_id AND td.is_delete = 0
+        WHERE
+            t.is_delete = 0
+        <if test="roleId != null and roleId != 1L">
+            AND t.role_id = #{roleId}
+        </if>
+        GROUP BY t.vehicle_id
+    </select>
+
+    <select id="queryTspVehicleSysRoleVOOfAll" resultType="com.modern.xtsp.domain.vo.TspVehicleSysRoleVO">
+        SELECT tv.id vehicle_id, tv.vin,
+            group_concat(sr.role_name) role_names,
+            concat(tvm.vehicle_model_name, '/', tvsm.std_mode_name) vehicle_type,
+            tv.dealer_id, td.dealer_name, td.dealer_address
+        FROM tsp_vehicle tv
+            LEFT JOIN tsp_vehicle_std_model tvsm ON tvsm.id = tv.tsp_vehicle_std_model_id AND tvsm.is_delete = 0
+            LEFT JOIN tsp_vehicle_model tvm ON tvm.id = tvsm.tsp_vehicle_model_id AND tvm.is_delete = 0
+            LEFT JOIN tsp_dealer td ON td.id = tv.dealer_id AND td.is_delete = 0
+            LEFT JOIN tsp_vehicle_sys_role t ON t.vehicle_id = tv.id AND t.is_delete = 0
+            LEFT JOIN sys_role sr ON sr.role_id = t.role_id AND sr.del_flag = 0
+        WHERE
+            tv.is_delete = 0 AND tv.tsp_equipment_id IS NOT NULL AND tv.state != 4 AND tv.state != 5
+        GROUP BY tv.id
+    </select>
+
+    <update id="deleteByRoleId">
+        UPDATE tsp_vehicle_sys_role
+        SET is_delete = 1,
+            update_time = #{updateTime},
+            update_by = #{updateBy}
+        WHERE
+            role_id = #{roleId} AND is_delete = 0
+    </update>
+</mapper>

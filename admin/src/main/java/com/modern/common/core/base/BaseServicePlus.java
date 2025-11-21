@@ -1,0 +1,202 @@
+package com.modern.common.core.base;
+
+import cn.hutool.core.bean.copier.CopyOptions;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.toolkit.ClassUtils;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.modern.common.core.base.page.PagePlus;
+import com.modern.common.utils.bean.BeanCopyUtils;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ResolvableType;
+
+import java.io.Serializable;
+import java.lang.reflect.Type;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * IServicePlus 实现类
+ *
+ * @author Lion Li
+ */
+@Slf4j
+@SuppressWarnings("unchecked")
+public class BaseServicePlus<M extends BaseMapperPlus<T>, T, K> extends ServiceImpl<M, T> implements IServicePlus<T, K> {
+
+	@Autowired
+	protected M baseMapper;
+
+	@Override
+	public M getBaseMapper() {
+		return baseMapper;
+	}
+
+
+	protected Class<T> entityClass = currentModelClass();
+
+	@Override
+	public Class<T> getEntityClass() {
+		return entityClass;
+	}
+
+	protected Class<T> mapperClass = currentMapperClass();
+
+	protected Class<K> dtoClass = currentVoClass();
+
+	public Class<K> getDtoClass() {
+		return dtoClass;
+	}
+
+	@Override
+	protected Class<T> currentMapperClass() {
+		return (Class<T>) this.getResolvableType().as(BaseServicePlus.class).getGeneric(0).getType();
+	}
+
+	@Override
+	protected Class<T> currentModelClass() {
+		Type type = this.getResolvableType().as(BaseServicePlus.class).getGeneric(1).getType();
+		return (Class<T>) type;
+	}
+
+	protected Class<K> currentVoClass() {
+		return (Class<K>) this.getResolvableType().as(BaseServicePlus.class).getGeneric(2).getType();
+	}
+
+	@Override
+	protected ResolvableType getResolvableType() {
+		ResolvableType resolvableType = ResolvableType.forClass(ClassUtils.getUserClass(getClass()));
+		return resolvableType;
+	}
+
+	/**
+	 * 单条执行性能差 适用于列表对象内容不确定
+	 */
+	@Override
+	public boolean saveBatch(Collection<T> entityList, int batchSize) {
+		return super.saveBatch(entityList, batchSize);
+	}
+
+	@Override
+	public boolean saveOrUpdate(T entity) {
+		return super.saveOrUpdate(entity);
+	}
+
+	/**
+	 * 单条执行性能差 适用于列表对象内容不确定
+	 */
+	@Override
+	public boolean saveOrUpdateBatch(Collection<T> entityList, int batchSize) {
+		return super.saveOrUpdateBatch(entityList, batchSize);
+	}
+
+	@Override
+	public boolean updateBatchById(Collection<T> entityList, int batchSize) {
+		return super.updateBatchById(entityList, batchSize);
+	}
+
+	@Override
+	public boolean saveBatch(Collection<T> entityList) {
+		return saveBatch(entityList, DEFAULT_BATCH_SIZE);
+	}
+
+	@Override
+	public boolean saveOrUpdateBatch(Collection<T> entityList) {
+		return saveOrUpdateBatch(entityList, DEFAULT_BATCH_SIZE);
+	}
+
+	@Override
+	public boolean updateBatchById(Collection<T> entityList) {
+		return updateBatchById(entityList, DEFAULT_BATCH_SIZE);
+	}
+
+	/**
+	 * 单sql批量插入( 全量填充 无视数据库默认值 )
+	 * 适用于无脑插入
+	 */
+	@Override
+	public boolean saveAll(Collection<T> entityList) {
+		return baseMapper.insertAll(entityList) == entityList.size();
+	}
+
+	/**
+	 * 根据 ID 查询
+	 *
+	 * @param id 主键ID
+	 */
+	@Override
+	public K getDTOById(Serializable id, CopyOptions copyOptions) {
+		T t = getBaseMapper().selectById(id);
+		return BeanCopyUtils.oneCopy(t, copyOptions, dtoClass);
+	}
+
+	/**
+	 * 查询（根据ID 批量查询）
+	 *
+	 * @param idList 主键ID列表
+	 */
+	@Override
+	public List<K> listDTOByIds(Collection<? extends Serializable> idList, CopyOptions copyOptions) {
+		List<T> list = getBaseMapper().selectBatchIds(idList);
+		if (list == null) {
+			return null;
+		}
+		return BeanCopyUtils.listCopy(list, copyOptions, dtoClass);
+	}
+
+	/**
+	 * 查询（根据 columnMap 条件）
+	 *
+	 * @param columnMap 表字段 map 对象
+	 */
+	@Override
+	public List<K> listDTOByMap(Map<String, Object> columnMap, CopyOptions copyOptions) {
+		List<T> list = getBaseMapper().selectByMap(columnMap);
+		if (list == null) {
+			return null;
+		}
+		return BeanCopyUtils.listCopy(list, copyOptions, dtoClass);
+	}
+
+	/**
+	 * 根据 Wrapper，查询一条记录 <br/>
+	 * <p>结果集，如果是多个会抛出异常，随机取一条加上限制条件 wrapper.last("LIMIT 1")</p>
+	 *
+	 * @param queryWrapper 实体对象封装操作类 {@link com.baomidou.mybatisplus.core.conditions.query.QueryWrapper}
+	 */
+	@Override
+	public K getDTOOne(Wrapper<T> queryWrapper, CopyOptions copyOptions) {
+		T t = getOne(queryWrapper, true);
+		return BeanCopyUtils.oneCopy(t, copyOptions, dtoClass);
+	}
+
+	/**
+	 * 查询列表
+	 *
+	 * @param queryWrapper 实体对象封装操作类 {@link com.baomidou.mybatisplus.core.conditions.query.QueryWrapper}
+	 */
+	@Override
+	public List<K> listDTO(Wrapper<T> queryWrapper, CopyOptions copyOptions) {
+		List<T> list = getBaseMapper().selectList(queryWrapper);
+		if (list == null) {
+			return null;
+		}
+		return BeanCopyUtils.listCopy(list, copyOptions, dtoClass);
+	}
+
+	/**
+	 * 翻页查询
+	 *
+	 * @param page         翻页对象
+	 * @param queryWrapper 实体对象封装操作类
+	 */
+	@Override
+	public PagePlus<T, K> pageDTO(PagePlus<T, K> page, Wrapper<T> queryWrapper, CopyOptions copyOptions) {
+		PagePlus<T, K> result = getBaseMapper().selectPage(page, queryWrapper);
+		List<K> dtos = BeanCopyUtils.listCopy(result.getRecords(), copyOptions, dtoClass);
+		result.setRecordsDTO(dtos);
+		return result;
+	}
+
+}

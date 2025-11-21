@@ -1,0 +1,10 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+用户 -> 告警规则: 新建告警规则
+告警规则 --> 子条件: 选取子条件规则
+子条件 --> 制定子条件: 新建子条件
+告警规则 --> 制定子条件: 制定规则
+@enduml
