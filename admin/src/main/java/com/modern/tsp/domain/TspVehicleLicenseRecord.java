@@ -33,8 +33,8 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @Alias("TspVehicleLicenseRecord")
-@Table(value = "Tsp_vehicle_license_record",comment = "摩登 - TSP - 车牌操作记录")
-@TableName("Tsp_vehicle_license_record")
+@Table(value = "tsp_vehicle_license_record",comment = "摩登 - TSP - 车牌操作记录")
+@TableName("tsp_vehicle_license_record")
 public class TspVehicleLicenseRecord extends BaseModel {
 
     private static final long serialVersionUID = 1L;
