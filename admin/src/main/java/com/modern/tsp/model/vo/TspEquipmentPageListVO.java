@@ -36,6 +36,9 @@ public class TspEquipmentPageListVO extends BaseVO {
     @ApiModelProperty("SIM")
     private String sim;
 
+    @ApiModelProperty("ICCID")
+    private String iccId;
+
     @ApiModelProperty("报废状态")
     private String showScrap;
 

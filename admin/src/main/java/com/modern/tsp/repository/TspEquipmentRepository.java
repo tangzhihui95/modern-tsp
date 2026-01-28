@@ -49,7 +49,10 @@ public class TspEquipmentRepository extends ServicePlusImpl<TspEquipmentMapper,T
         ew.and(StringUtils.isNotEmpty(vo.getSn()),
                         q1 -> q1.like(Constants.JOIN_TABLE_PREFIX_T + TspEquipment.SN, vo.getSn())
                                 .or()
-                                .like(Constants.JOIN_TABLE_PREFIX_T + TspEquipment.SIM,vo.getSn()));
+                                .like(Constants.JOIN_TABLE_PREFIX_T + TspEquipment.SIM,vo.getSn())
+                                .or()
+                                .like(Constants.JOIN_TABLE_PREFIX_T + TspEquipment.ICCID,vo.getSn())
+        );
 
         ew.orderByDesc(Constants.JOIN_TABLE_PREFIX_T + TspEquipment.ID);
 
